@@ -132,8 +132,17 @@ namespace ITES_App
                 FontAttributes = FontAttributes.Italic,
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                 TextColor = Color.FromHex("#8DB5FF"),
-                Margin = new Thickness(0, 20, 0, 0)
+                Margin = new Thickness(0, 10, 0, 0),
             };
+
+            forgotPasswordLabel.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command(() =>
+                {
+                    // ToDo: código para manejar el evento Tapped de la etiqueta.
+                    DisplayAlert("Recuperar Clave", "Ingrese su correo", "Ok", "Cerrar");
+                })
+            });
 
             dniFrame.Content = dniEntry;
             passwordFrame.Content = passwordEntry;
