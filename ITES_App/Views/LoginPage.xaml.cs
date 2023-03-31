@@ -1,4 +1,5 @@
-﻿using ITES_App.Views;
+﻿using ITES_App.Models;
+using ITES_App.Views;
 using System;
 using Xamarin.Forms;
 
@@ -10,11 +11,16 @@ namespace ITES_App
 
         private Entry dniEntry;
         private Entry passwordEntry;
+        private Button loginButton;
         private const string url_Logo = "Ites_logo.png";
+
+        FirebaseHelper firebaseHelper;
 
         public LoginPage()
         {
             InitializeComponent();
+
+            firebaseHelper = new FirebaseHelper();
 
             #region Initialization and Design
 
@@ -70,6 +76,12 @@ namespace ITES_App
                 PlaceholderColor = Color.Gray,
                 TextColor = Color.Black,
                 Keyboard = Keyboard.Numeric,
+                ReturnType = ReturnType.Next
+            };
+
+            dniEntry.Completed += (sender, e) =>
+            {
+                passwordEntry.Focus();
             };
 
             dniEntry.TextChanged += (sender, e) =>
@@ -110,13 +122,19 @@ namespace ITES_App
             passwordEntry = new Entry
             {
                 Placeholder = "Clave",
+                IsPassword = true,
                 PlaceholderColor = Color.Gray,
                 TextColor = Color.Black,
                 Keyboard = Keyboard.Default,
-                IsPassword = true
+                ReturnType = ReturnType.Done
             };
 
-            var loginButton = new Button
+            passwordEntry.Completed += (sender, e) =>
+            {
+                OnLoginButtonClicked(this, EventArgs.Empty);
+            };
+
+            loginButton = new Button
             {
                 Text = "Iniciar Sesión",
                 TextColor = Color.White,
@@ -140,7 +158,10 @@ namespace ITES_App
                 Command = new Command(() =>
                 {
                     // ToDo: código para manejar el evento Tapped de la etiqueta.
-                    DisplayAlert("Recuperar Clave", "Ingrese su correo", "Ok", "Cerrar");
+                    //DisplayAlert("Recuperar Clave", "Ingrese su correo", "Cerrar", "Ok");
+                    //CargarAlumnoButtonClicked(this, EventArgs.Empty);
+                     GuardarAlumnoButtonClicked(this, EventArgs.Empty);
+
                 })
             });
 
@@ -161,20 +182,77 @@ namespace ITES_App
             #region Buttons
 
             loginButton.Clicked += OnLoginButtonClicked;
+            //GuardarAlumnoButtonClicked;
 
             #endregion
 
+
         }
 
-        private async void OnLoginButtonClicked(object sender, EventArgs e)
+        #region FIREBASE DATABASE REALTIME TEST
+        
+        private async void GuardarAlumnoButtonClicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(passwordEntry.Text) || string.IsNullOrEmpty(dniEntry.Text))
+            // Guardar el objeto Alumno en Firebase Realtime Database
+            await firebaseHelper.AgregarAlumno("41185616", "admin123", "Porcel.JuanCruz.ar@gmail.com", "Juan Cruz Perez Porcel");
+            await DisplayAlert("Éxito", "Alumno agregado correctamente", "Ok");
+        }
+
+        private async void CargarAlumnoButtonClicked(object sender, EventArgs e)
+        {
+            // Obtener el objeto Alumno correspondiente al DNI "12345678A" desde Firebase Realtime Database
+            Alumno alumno = await firebaseHelper.ObtenerAlumno("41185616");
+
+            if (alumno != null)
             {
-                await DisplayAlert("Usuario no encontrado", "DNI o Clave incorrecta", "Ok");
+                // Si el objeto Alumno existe en Firebase Realtime Database, mostrar sus valores en un mensaje
+                string mensaje = $"Nombre: {alumno.Nombre}\nEmail: {alumno.Email}\nPassword: {alumno.Password}";
+                await DisplayAlert("Alumno encontrado", mensaje, "Ok");
             }
             else
             {
-                await Navigation.PushAsync(new MainMenuPage());
+                // Si el objeto Alumno no existe en Firebase Realtime Database, mostrar un mensaje de error
+                await DisplayAlert("Error", "Alumno no encontrado", "Ok");
+            }
+        }
+        
+        #endregion
+
+        private async void OnLoginButtonClicked(object sender, EventArgs e)
+        {
+            loginButton.IsEnabled = false;
+            try
+            {
+                string dni = dniEntry.Text;
+                string password = passwordEntry.Text;
+
+                if (string.IsNullOrEmpty(dni) || string.IsNullOrEmpty(password))
+                {
+                    await DisplayAlert("Usuario no encontrado", "DNI o Clave incorrecta", "Ok");
+                }
+                else
+                {
+                    FirebaseHelper firebaseHelper = new FirebaseHelper();
+
+                    Alumno alumno = await firebaseHelper.ObtenerAlumno(dni);
+
+                    if (alumno == null || alumno.Password != password)
+                    {
+                        await DisplayAlert("Alumno no encontrado", "DNI o Clave incorrecta", "Ok");
+                    }
+                    else
+                    {
+                        await Navigation.PushAsync(new MainMenuPage());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                loginButton.IsEnabled = true;
             }
         }
     }
