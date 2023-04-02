@@ -16556,10 +16556,10 @@ namespace ITES_App.Droid
 			public const int Ites_Icon = 2131165291;
 			
 			// aapt resource value: 0x7F07006C
-			public const int Ites_Logo_WithBackground = 2131165292;
+			public const int Ites_Logo_Background = 2131165292;
 			
 			// aapt resource value: 0x7F07006D
-			public const int Ites_Logo_WithoutBackground = 2131165293;
+			public const int Ites_Logo_NoBackground = 2131165293;
 			
 			// aapt resource value: 0x7F07006E
 			public const int material_cursor_drawable = 2131165294;

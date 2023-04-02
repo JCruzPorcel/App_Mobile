@@ -102,10 +102,10 @@
     <AndroidResource Include="Resources\drawable\Ites_Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Ites_Logo_WithoutBackground.png" />
+    <AndroidResource Include="Resources\drawable\Ites_Logo_NoBackground.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Ites_Logo_WithBackground.png" />
+    <AndroidResource Include="Resources\drawable\Ites_Logo_Background.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

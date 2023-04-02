@@ -70,7 +70,6 @@ namespace ITES_App.Models
 
                 string correo = alumno.Object.Email;
 
-                // Eliminar el alumno de Firebase
                 await firebase.Child(dataType).Child(alumno.Key).DeleteAsync();
 
                 return true;

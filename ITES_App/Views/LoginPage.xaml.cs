@@ -12,7 +12,7 @@ namespace ITES_App
         private Entry dniEntry;
         private Entry passwordEntry;
         private Button loginButton;
-        private const string url_Logo = "Ites_Logo_WithBackground.png";
+        private const string url_Logo = "Ites_Logo_Background.png";
 
         FirebaseHelper firebaseHelper;
 
@@ -30,16 +30,6 @@ namespace ITES_App
             {
                 BackgroundColor = Color.FromHex("#DCDAD5")
             };
-
-            /* var label = new Label
-             {
-                 Text = "ITES Mobile",
-                 FontAttributes = FontAttributes.Bold,
-                 FontSize = 40,
-                 TextColor = Color.FromHex("#194780"),
-                 Margin = new Thickness(0, 20, 0, 0),
-                 HorizontalOptions = LayoutOptions.Center
-             };*/
 
             var image = new Image
             {
@@ -150,20 +140,26 @@ namespace ITES_App
                 FontAttributes = FontAttributes.Italic,
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                 TextColor = Color.FromHex("#8DB5FF"),
-                Margin = new Thickness(0, 10, 0, 0),
+                HorizontalOptions = LayoutOptions.Start,
             };
 
-            forgotPasswordLabel.GestureRecognizers.Add(new TapGestureRecognizer
+            var tapGestureRecognizer = new TapGestureRecognizer();
+            tapGestureRecognizer.Tapped += async (s, e) =>
             {
-                Command = new Command(() =>
-                {
-                    // ToDo: código para manejar el evento Tapped de la etiqueta.
-                    //DisplayAlert("Recuperar Clave", "Ingrese su correo", "Cerrar", "Ok");
-                    //CargarAlumnoButtonClicked(this, EventArgs.Empty);
-                    GuardarAlumnoButtonClicked(this, EventArgs.Empty);
+                await Navigation.PushAsync(new PasswordRecoveryPage());
+            };
 
-                })
-            });
+            forgotPasswordLabel.GestureRecognizers.Add(tapGestureRecognizer);
+
+            var labelContainer = new StackLayout
+            {
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                Padding = 0,
+                Children = { forgotPasswordLabel }
+            };
+
+
+
 
             dniFrame.Content = dniEntry;
             passwordFrame.Content = passwordEntry;
@@ -172,7 +168,6 @@ namespace ITES_App
             innerStackLayout.Children.Add(loginButton);
             innerStackLayout.Children.Add(forgotPasswordLabel);
             frame.Content = innerStackLayout;
-            //stackLayout.Children.Add(label);
             stackLayout.Children.Add(image);
             stackLayout.Children.Add(frame);
             Content = stackLayout;
@@ -182,7 +177,6 @@ namespace ITES_App
             #region Buttons
 
             loginButton.Clicked += OnLoginButtonClicked;
-            //GuardarAlumnoButtonClicked;
 
             #endregion
 
@@ -193,30 +187,32 @@ namespace ITES_App
 
         private async void GuardarAlumnoButtonClicked(object sender, EventArgs e)
         {
-            // Guardar el objeto Alumno en Firebase Realtime Database
             await firebaseHelper.AgregarAlumno("29032023", "admin", "Porcel.JuanCruz@example.com", "Perez Porcel Juan Cruz");
             await DisplayAlert("Éxito", "Alumno agregado correctamente", "Ok");
         }
 
         private async void CargarAlumnoButtonClicked(object sender, EventArgs e)
         {
-            // Obtener el objeto Alumno correspondiente al DNI "12345678A" desde Firebase Realtime Database
             Alumno alumno = await firebaseHelper.ObtenerAlumno("41185616");
 
             if (alumno != null)
             {
-                // Si el objeto Alumno existe en Firebase Realtime Database, mostrar sus valores en un mensaje
                 string mensaje = $"Nombre: {alumno.Nombre}\nEmail: {alumno.Email}\nPassword: {alumno.Password}";
                 await DisplayAlert("Alumno encontrado", mensaje, "Ok");
             }
             else
             {
-                // Si el objeto Alumno no existe en Firebase Realtime Database, mostrar un mensaje de error
                 await DisplayAlert("Error", "Alumno no encontrado", "Ok");
             }
         }
 
         #endregion
+
+
+        private async void ForgotPasswordLabel_Tapped(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new PasswordRecoveryPage());
+        }
 
         private async void OnLoginButtonClicked(object sender, EventArgs e)
         {
