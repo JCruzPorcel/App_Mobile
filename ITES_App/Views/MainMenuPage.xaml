@@ -1,12 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ITES_App.Views.MainMenuPage">
+             x:Class="ITES_App.Views.MainMenuPage"
+             NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout BackgroundColor="#DCDAD5">
+            <Frame BackgroundColor="#343A40"
+                   HasShadow="False">
+                <Label Text="ITES - Autogestión"
+                       TextColor="White"
+                       FontSize="20"
+                       FontAttributes="Bold,Italic"
+                       TextDecorations="None"
+                       HorizontalOptions="Center" />
+            </Frame>
+            <Image Source="Ites_Logo_WithBackground" />                
+            <Frame BackgroundColor="WhiteSmoke"
+                   Padding="10"
+                   CornerRadius="20"
+                   Margin="30,60,30,20">
+                <StackLayout Spacing="12">
+                    <Button Text="Listado de Notas"
+                            TextColor="WhiteSmoke"
+                            FontAttributes="Bold"
+                            Background="#3F6171"
+                            CornerRadius="50"
+                            Margin="30,10,30,0" />
+                    <Button Text="Certificados"
+                            TextColor="WhiteSmoke"
+                            Background="#3F6171"
+                            FontAttributes="Bold"
+                            CornerRadius="50"
+                            Margin="30,0,30,0" />
+                    <Button Text="Inscripciones"
+                            TextColor="WhiteSmoke"
+                            FontAttributes="Bold"
+                            Background="#3F6171"
+                            CornerRadius="50"
+                            Margin="30,0,30,0" />
+                    <Button Text="Classroom"
+                            TextColor="WhiteSmoke"
+                            FontAttributes="Bold"
+                            Background="#5F7FA6"
+                            CornerRadius="50"
+                            Margin="30,0,30,0" />
+                    <Button Text="Asistencias"
+                            TextColor="WhiteSmoke"
+                            FontAttributes="Bold"
+                            Background="#5F7FA6"
+                            CornerRadius="50"
+                            Margin="30,0,30,10" />
+                    <Button Text="Cerrar Sesión"
+                            TextColor="WhiteSmoke"
+                            FontAttributes="Bold, Italic"
+                            FontSize="13"
+                            Background="#BF6171"
+                            CornerRadius="50"
+                            HeightRequest="40"
+                            Margin="45,10,45,10"
+                            Clicked="OnLogoutButtonClicked" />
+                </StackLayout>
+            </Frame>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

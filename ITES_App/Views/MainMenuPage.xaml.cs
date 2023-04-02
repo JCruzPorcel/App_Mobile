@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace ITES_App.Views
@@ -15,6 +9,11 @@ namespace ITES_App.Views
         public MainMenuPage()
         {
             InitializeComponent();
+        }
+
+        private async void OnLogoutButtonClicked(object sender, System.EventArgs e)
+        {
+            await Navigation.PopAsync();
         }
     }
 }

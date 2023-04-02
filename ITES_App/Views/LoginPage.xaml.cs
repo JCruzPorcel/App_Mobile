@@ -12,7 +12,7 @@ namespace ITES_App
         private Entry dniEntry;
         private Entry passwordEntry;
         private Button loginButton;
-        private const string url_Logo = "Ites_logo.png";
+        private const string url_Logo = "Ites_Logo_WithBackground.png";
 
         FirebaseHelper firebaseHelper;
 
@@ -160,7 +160,7 @@ namespace ITES_App
                     // ToDo: código para manejar el evento Tapped de la etiqueta.
                     //DisplayAlert("Recuperar Clave", "Ingrese su correo", "Cerrar", "Ok");
                     //CargarAlumnoButtonClicked(this, EventArgs.Empty);
-                     GuardarAlumnoButtonClicked(this, EventArgs.Empty);
+                    GuardarAlumnoButtonClicked(this, EventArgs.Empty);
 
                 })
             });
@@ -190,11 +190,11 @@ namespace ITES_App
         }
 
         #region FIREBASE DATABASE REALTIME TEST
-        
+
         private async void GuardarAlumnoButtonClicked(object sender, EventArgs e)
         {
             // Guardar el objeto Alumno en Firebase Realtime Database
-            await firebaseHelper.AgregarAlumno("41185616", "admin123", "Porcel.JuanCruz.ar@gmail.com", "Juan Cruz Perez Porcel");
+            await firebaseHelper.AgregarAlumno("29032023", "admin", "Porcel.JuanCruz@example.com", "Perez Porcel Juan Cruz");
             await DisplayAlert("Éxito", "Alumno agregado correctamente", "Ok");
         }
 
@@ -215,7 +215,7 @@ namespace ITES_App
                 await DisplayAlert("Error", "Alumno no encontrado", "Ok");
             }
         }
-        
+
         #endregion
 
         private async void OnLoginButtonClicked(object sender, EventArgs e)

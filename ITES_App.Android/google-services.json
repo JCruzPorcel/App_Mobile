@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "417154589461",
+    "firebase_url": "https://ites-app-default-rtdb.firebaseio.com",
+    "project_id": "ites-app",
+    "storage_bucket": "ites-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:417154589461:android:d2ead149efec30acccff1c",
+        "android_client_info": {
+          "package_name": "com.PorcelJCruz.ites_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "417154589461-2fu0btpa38kievrq525ccpb99qsfnv67.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.PorcelJCruz.ites_app",
+            "certificate_hash": "cf2c097e4177d8f162b17f51092e52df7af7435d"
+          }
+        },
+        {
+          "client_id": "417154589461-lh45f78vocq5ghn0ivfmkisf00fm8432.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmXPNGYzT-P6cTGBIhbskYYykiN-SVPLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "417154589461-lh45f78vocq5ghn0ivfmkisf00fm8432.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
