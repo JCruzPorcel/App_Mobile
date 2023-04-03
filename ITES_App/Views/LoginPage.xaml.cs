@@ -1,39 +1,55 @@
-﻿using ITES_App.Models;
+﻿using ITES_App.Design;
+using ITES_App.Models;
 using ITES_App.Views;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace ITES_App
 {
     public partial class LoginPage : ContentPage
     {
-        private const int MaxDigits = 8; // Caracter maximo DNI
+        #region Variables
+        private const int MaxDigits = 8; // Caracter máximo DNI
+        private const string placeHolder_DNI = "DNI";
+        private const string placeHolder_Password = "Clave";
+        private const string login_Text = "Iniciar Sesión";
+        private const string forgotPassword_Text = "Olvidé mi clave";
 
+        #endregion
+
+        #region Reference's
+        // Design
         private Entry dniEntry;
         private Entry passwordEntry;
         private Button loginButton;
-        private const string url_Logo = "Ites_Logo_Background.png";
+        private Label forgotPasswordLabel;
+        private TapGestureRecognizer tapGestureRecognizer;
 
         FirebaseHelper firebaseHelper;
+        #endregion
+
 
         public LoginPage()
         {
             InitializeComponent();
 
+
             firebaseHelper = new FirebaseHelper();
 
-            #region Initialization and Design
+
+            #region Design
 
             NavigationPage.SetHasNavigationBar(this, false);
 
             var stackLayout = new StackLayout
             {
-                BackgroundColor = Color.FromHex("#DCDAD5")
+                BackgroundColor = Color.FromHex(AppColors._Beige)
             };
 
             var image = new Image
             {
-                Source = url_Logo,
+                Source = AppColors._Logo,
                 HeightRequest = 200,
                 WidthRequest = 200,
                 Margin = new Thickness(20, 100, 20, 70)
@@ -62,16 +78,11 @@ namespace ITES_App
 
             dniEntry = new Entry
             {
-                Placeholder = "DNI",
+                Placeholder = placeHolder_DNI,
                 PlaceholderColor = Color.Gray,
                 TextColor = Color.Black,
                 Keyboard = Keyboard.Numeric,
                 ReturnType = ReturnType.Next
-            };
-
-            dniEntry.Completed += (sender, e) =>
-            {
-                passwordEntry.Focus();
             };
 
             dniEntry.TextChanged += (sender, e) =>
@@ -111,7 +122,7 @@ namespace ITES_App
 
             passwordEntry = new Entry
             {
-                Placeholder = "Clave",
+                Placeholder = placeHolder_Password,
                 IsPassword = true,
                 PlaceholderColor = Color.Gray,
                 TextColor = Color.Black,
@@ -119,35 +130,27 @@ namespace ITES_App
                 ReturnType = ReturnType.Done
             };
 
-            passwordEntry.Completed += (sender, e) =>
-            {
-                OnLoginButtonClicked(this, EventArgs.Empty);
-            };
-
             loginButton = new Button
             {
-                Text = "Iniciar Sesión",
+                Text = login_Text,
                 TextColor = Color.White,
                 TextTransform = TextTransform.None,
-                BackgroundColor = Color.FromHex("#42D885"),
+                BackgroundColor = Color.FromHex(AppColors._Green),
                 FontAttributes = FontAttributes.Bold,
                 CornerRadius = 50
             };
 
-            var forgotPasswordLabel = new Label
+            forgotPasswordLabel = new Label
             {
-                Text = "Olvidé mi clave",
+                Text = forgotPassword_Text,
                 FontAttributes = FontAttributes.Italic,
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
-                TextColor = Color.FromHex("#8DB5FF"),
+                TextColor = Color.FromHex(AppColors._DarkBlue),
                 HorizontalOptions = LayoutOptions.Start,
             };
 
-            var tapGestureRecognizer = new TapGestureRecognizer();
-            tapGestureRecognizer.Tapped += async (s, e) =>
-            {
-                await Navigation.PushAsync(new PasswordRecoveryPage());
-            };
+            tapGestureRecognizer = new TapGestureRecognizer();
+            tapGestureRecognizer.Tapped += ForgotPasswordLabel_Tapped;
 
             forgotPasswordLabel.GestureRecognizers.Add(tapGestureRecognizer);
 
@@ -157,7 +160,6 @@ namespace ITES_App
                 Padding = 0,
                 Children = { forgotPasswordLabel }
             };
-
 
 
 
@@ -176,47 +178,43 @@ namespace ITES_App
 
             #region Buttons
 
+            passwordEntry.Completed += (sender, e) =>
+            {
+                OnLoginButtonClicked(this, EventArgs.Empty);
+            };
+
             loginButton.Clicked += OnLoginButtonClicked;
 
             #endregion
 
-
         }
 
-        #region FIREBASE DATABASE REALTIME TEST
-
-        private async void GuardarAlumnoButtonClicked(object sender, EventArgs e)
-        {
-            await firebaseHelper.AgregarAlumno("29032023", "admin", "Porcel.JuanCruz@example.com", "Perez Porcel Juan Cruz");
-            await DisplayAlert("Éxito", "Alumno agregado correctamente", "Ok");
-        }
-
-        private async void CargarAlumnoButtonClicked(object sender, EventArgs e)
-        {
-            Alumno alumno = await firebaseHelper.ObtenerAlumno("41185616");
-
-            if (alumno != null)
-            {
-                string mensaje = $"Nombre: {alumno.Nombre}\nEmail: {alumno.Email}\nPassword: {alumno.Password}";
-                await DisplayAlert("Alumno encontrado", mensaje, "Ok");
-            }
-            else
-            {
-                await DisplayAlert("Error", "Alumno no encontrado", "Ok");
-            }
-        }
-
-        #endregion
-
+        #region Method's
 
         private async void ForgotPasswordLabel_Tapped(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new PasswordRecoveryPage());
+            loginButton.IsEnabled = false;
+            forgotPasswordLabel.GestureRecognizers.Remove(tapGestureRecognizer);
+
+            try
+            {
+                passwordEntry.Text = string.Empty;
+                dniEntry.Text = string.Empty;
+            }
+            finally
+            {
+                forgotPasswordLabel.GestureRecognizers.Add(tapGestureRecognizer);
+                loginButton.IsEnabled = true;
+                await Navigation.PushAsync(new PasswordRecoveryPage());
+
+            }
         }
 
         private async void OnLoginButtonClicked(object sender, EventArgs e)
         {
             loginButton.IsEnabled = false;
+            forgotPasswordLabel.GestureRecognizers.Remove(tapGestureRecognizer);
+
             try
             {
                 string dni = dniEntry.Text;
@@ -224,21 +222,31 @@ namespace ITES_App
 
                 if (string.IsNullOrEmpty(dni) || string.IsNullOrEmpty(password))
                 {
-                    await DisplayAlert("Usuario no encontrado", "DNI o Clave incorrecta", "Ok");
+                    await HandleEmptyFields(dni, password);
                 }
                 else
                 {
-                    FirebaseHelper firebaseHelper = new FirebaseHelper();
+                    var usuario = await firebaseHelper.ObtenerAlumno(dni);
 
-                    Alumno alumno = await firebaseHelper.ObtenerAlumno(dni);
-
-                    if (alumno == null || alumno.Password != password)
+                    if (usuario == null)
                     {
-                        await DisplayAlert("Alumno no encontrado", "DNI o Clave incorrecta", "Ok");
+                        await DisplayAlert("DNI Inválido", "El usuario no se encuentra registrado", "Aceptar");
+                    }
+                    else if (usuario.Password != password)
+                    {
+                        await DisplayAlert("Clave Inválida", "La Clave es incorrecta", "Aceptar");
                     }
                     else
                     {
-                        await Navigation.PushAsync(new MainMenuPage());
+                        try
+                        {
+                            passwordEntry.Text = string.Empty;
+                            dniEntry.Text = string.Empty;
+                        }
+                        finally
+                        {
+                            await Navigation.PushAsync(new MainMenuPage());
+                        }
                     }
                 }
             }
@@ -248,8 +256,28 @@ namespace ITES_App
             }
             finally
             {
+                forgotPasswordLabel.GestureRecognizers.Add(tapGestureRecognizer);
                 loginButton.IsEnabled = true;
             }
         }
+
+        private async Task HandleEmptyFields(string dni, string password)
+        {
+            if (string.IsNullOrEmpty(dni) && string.IsNullOrEmpty(password))
+            {
+                await DisplayAlert("Error", "Por favor, complete el campo de DNI y Clave.", "Ok");
+            }
+            else if (string.IsNullOrEmpty(dni))
+            {
+                await DisplayAlert("Error", "Por favor, complete el campo de DNI.", "Ok");
+            }
+            else if (string.IsNullOrEmpty(password))
+            {
+                await DisplayAlert("Error", "Por favor, complete el campo de Clave.", "Ok");
+            }
+        }
+
+        #endregion
     }
+
 }

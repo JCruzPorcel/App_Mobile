@@ -48,12 +48,12 @@ namespace ITES_App.Models
             return alumno;
         }
 
-        public async Task<bool> ActualizarAlumno(string dni, string password, string email, string nombreCompleto)
+        public async Task<bool> ActualizarAlumno(string dni, string password, string email, string nombre)
         {
             try
             {
                 var alumno = (await firebase.Child(dataType).OnceAsync<Alumno>()).FirstOrDefault(x => x.Object.DNI == dni);
-                await firebase.Child(dataType).Child(alumno.Key).PutAsync(new Alumno { DNI = dni, Password = password, Email = email, Nombre = nombreCompleto });
+                await firebase.Child(dataType).Child(alumno.Key).PutAsync(new Alumno { DNI = dni, Password = password, Email = email, Nombre = nombre });
                 return true;
             }
             catch
