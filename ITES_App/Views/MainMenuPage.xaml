@@ -22,7 +22,7 @@
                             CornerRadius="50"
                             HeightRequest="35"
                             HorizontalOptions="Center"
-                            Clicked="OnLogoutButtonClicked" />
+                            />
                 </StackLayout>
             </Frame>
             <Image Source="Ites_Logo_Background" />
@@ -80,24 +80,28 @@
                             Background="#5F7FA6"
                             CornerRadius="50"
                             Margin="30,10,30,0" />
+                    
                     <Button Text="Certificados"
                             TextColor="WhiteSmoke"
                             Background="#5F7FA6"
                             FontAttributes="Bold"
                             CornerRadius="50"
                             Margin="30,0,30,0" />
+                    
                     <Button Text="Inscripciones"
                             TextColor="WhiteSmoke"
                             FontAttributes="Bold"
                             Background="#5F7FA6"
                             CornerRadius="50"
                             Margin="30,0,30,0" />
+                    
                     <Button Text="Classroom"
                             TextColor="WhiteSmoke"
                             FontAttributes="Bold"
                             Background="#61BF71"
                             CornerRadius="50"
                             Margin="30,0,30,0" />
+                    
                     <Button Text="Asistencias"
                             TextColor="WhiteSmoke"
                             FontAttributes="Bold"

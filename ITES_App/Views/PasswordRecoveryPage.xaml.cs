@@ -17,7 +17,7 @@ namespace ITES_App.Views
         private static readonly ResourceDictionary _Resources = new ResourceDictionary
         {
             ["TitleText"] = "Recuperar Clave",
-            ["SubtitleText"] = "Formulario de recuperación de clave",
+            ["SubtitleText"] = "Formulario de recuperación de Clave",
             ["BackButtonText"] = "Volver",
             ["AcceptButtonText"] = "Aceptar",
             ["DniPlaceholder"] = "DNI",
@@ -45,36 +45,27 @@ namespace ITES_App.Views
             InitializeComponent();
 
 
-            #region INITIALIZE COMPONENTS
+            #region Design
 
 
             firebaseHelper = new FirebaseHelper();
 
 
-            StackLayout stackLayout = new StackLayout { BackgroundColor = Color.FromHex(AppColors._Beige) };
+            StackLayout stackLayoutBackground = new StackLayout { BackgroundColor = Color.FromHex(AppColors._Beige) };
 
-            Frame frame1 = new Frame { BackgroundColor = Color.FromHex(AppColors._DarkGrey) };
+            var stackLayout = new StackLayout { BackgroundColor = Color.FromHex(AppColors._DarkGrey) };
 
-            Label label1 = new Label
+            Label label = new Label
             {
-                Text = _Resources["TitleText"].ToString(),
+                Text = _Resources["SubtitleText"].ToString(),
                 TextColor = Color.White,
                 FontSize = 20,
                 FontAttributes = FontAttributes.Bold | FontAttributes.Italic,
-                HorizontalTextAlignment = TextAlignment.Center
-            };
-
-            Image image1 = new Image { Source = AppColors._Logo };
-
-            Label label2 = new Label
-            {
-                Text = _Resources["SubtitleText"].ToString(),
-                TextColor = Color.FromHex(AppColors._DarkGrey),
-                FontSize = 20,
-                FontAttributes = FontAttributes.Bold | FontAttributes.Italic,
                 HorizontalTextAlignment = TextAlignment.Center,
-                Padding = new Thickness(10, 20, 10, 0)
+                Margin = 10,
             };
+
+            Image image = new Image { Source = AppColors._Logo };
 
             backButton = new Button
             {
@@ -83,7 +74,7 @@ namespace ITES_App.Views
                 FontAttributes = FontAttributes.Bold | FontAttributes.Italic,
                 CornerRadius = 20,
                 Margin = new Thickness(0, 0, 10, 0),
-                BackgroundColor = Color.FromHex(AppColors._Red),
+                BackgroundColor = Color.FromHex(AppColors._LightRed),
             };
 
             acceptButton = new Button
@@ -93,7 +84,7 @@ namespace ITES_App.Views
                 FontAttributes = FontAttributes.Bold,
                 CornerRadius = 20,
                 Margin = new Thickness(10, 0, 0, 0),
-                BackgroundColor = Color.FromHex(AppColors._Blue),
+                BackgroundColor = Color.FromHex(AppColors._LightBlue),
             };
 
             Grid grid = new Grid
@@ -159,11 +150,11 @@ namespace ITES_App.Views
                 IsPassword = true
             };
 
-            Frame frame2 = new Frame
+            Frame frame = new Frame
             {
                 CornerRadius = 15,
                 HasShadow = true,
-                Margin = new Thickness(20),
+                Margin = new Thickness(20, 100, 20, 20),
             };
 
             /* var emailFrame = new Frame()
@@ -200,12 +191,15 @@ namespace ITES_App.Views
 
 
 
-            stackLayout.Children.Add(frame1);
-            stackLayout.Children.Add(image1);
-            stackLayout.Children.Add(label2);
-            stackLayout.Children.Add(frame2);
+            stackLayout.Children.Add(label);
+            stackLayout.Children.Add(image);
+            stackLayoutBackground.Children.Add(stackLayout);
 
-            frame2.Content = stackLayout2;
+
+            // stackLayout.Children.Add(label2);
+            stackLayoutBackground.Children.Add(frame);
+
+            frame.Content = stackLayout2;
 
             //stackLayout2.Children.Add(emailFrame);
             stackLayout2.Children.Add(dniFrame);
@@ -222,8 +216,7 @@ namespace ITES_App.Views
             grid.Children.Add(backButton, 0, 0);
             grid.Children.Add(acceptButton, 1, 0);
 
-            Content = stackLayout;
-            frame1.Content = label1;
+            Content = stackLayoutBackground;
             #endregion
 
             #region Buttons
@@ -235,8 +228,8 @@ namespace ITES_App.Views
 
         private async void ConfirmRecoveryPassword(object sender, EventArgs e)
         {
-            acceptButton.IsEnabled = false;
-            backButton.IsEnabled = false;
+            EnableButtons(false);
+
             try
             {
                 string dni = dniEntry.Text;
@@ -281,8 +274,7 @@ namespace ITES_App.Views
             }
             finally
             {
-                acceptButton.IsEnabled = true;
-                backButton.IsEnabled = true;
+                EnableButtons(true);
             }
         }
 
@@ -309,8 +301,7 @@ namespace ITES_App.Views
 
         private async void BackButton(object sender, System.EventArgs e)
         {
-            acceptButton.IsEnabled = false;
-            backButton.IsEnabled = false;
+            EnableButtons(false);
 
             try
             {
@@ -318,9 +309,18 @@ namespace ITES_App.Views
             }
             finally
             {
-                acceptButton.IsEnabled = true;
-                backButton.IsEnabled = true;
+                EnableButtons(true);
             }
+        }
+
+        private void EnableButtons(bool isEnabled)
+        {
+            acceptButton.IsEnabled = isEnabled;
+            backButton.IsEnabled = isEnabled;
+            
+            dniEntry.IsEnabled = isEnabled;
+            passwordEntry.IsEnabled = isEnabled;
+            confirmPasswordEntry.IsEnabled = isEnabled;
         }
     }
 }

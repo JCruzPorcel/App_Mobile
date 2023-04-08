@@ -11,10 +11,14 @@ namespace ITES_App
     {
         #region Variables
         private const int MaxDigits = 8; // Caracter máximo DNI
-        private const string placeHolder_DNI = "DNI";
-        private const string placeHolder_Password = "Clave";
-        private const string login_Text = "Iniciar Sesión";
-        private const string forgotPassword_Text = "Olvidé mi clave";
+
+        private static readonly ResourceDictionary _Resources = new ResourceDictionary
+        {
+            ["DniPlaceholder"] = "DNI",
+            ["PasswordPlaceholder"] = "Clave",
+            ["LoginButtonText"] = "Iniciar Sesión",
+            ["ForgotPasswordText"] = "Olvidé mi clave",
+        };
 
         #endregion
 
@@ -78,7 +82,7 @@ namespace ITES_App
 
             dniEntry = new Entry
             {
-                Placeholder = placeHolder_DNI,
+                Placeholder = _Resources["DniPlaceholder"].ToString(),
                 PlaceholderColor = Color.Gray,
                 TextColor = Color.Black,
                 Keyboard = Keyboard.Numeric,
@@ -122,7 +126,7 @@ namespace ITES_App
 
             passwordEntry = new Entry
             {
-                Placeholder = placeHolder_Password,
+                Placeholder = _Resources["PasswordPlaceholder"].ToString(),
                 IsPassword = true,
                 PlaceholderColor = Color.Gray,
                 TextColor = Color.Black,
@@ -132,7 +136,7 @@ namespace ITES_App
 
             loginButton = new Button
             {
-                Text = login_Text,
+                Text = _Resources["LoginButtonText"].ToString(),
                 TextColor = Color.White,
                 TextTransform = TextTransform.None,
                 BackgroundColor = Color.FromHex(AppColors._Green),
@@ -142,7 +146,7 @@ namespace ITES_App
 
             forgotPasswordLabel = new Label
             {
-                Text = forgotPassword_Text,
+                Text = _Resources["ForgotPasswordText"].ToString(),
                 FontAttributes = FontAttributes.Italic,
                 FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                 TextColor = Color.FromHex(AppColors._DarkBlue),
@@ -198,22 +202,20 @@ namespace ITES_App
 
             try
             {
-                passwordEntry.Text = string.Empty;
-                dniEntry.Text = string.Empty;
+                await Navigation.PushAsync(new PasswordRecoveryPage());
             }
             finally
             {
+                passwordEntry.Text = string.Empty;
+                dniEntry.Text = string.Empty;
                 forgotPasswordLabel.GestureRecognizers.Add(tapGestureRecognizer);
                 loginButton.IsEnabled = true;
-                await Navigation.PushAsync(new PasswordRecoveryPage());
-
             }
         }
 
         private async void OnLoginButtonClicked(object sender, EventArgs e)
         {
-            loginButton.IsEnabled = false;
-            forgotPasswordLabel.GestureRecognizers.Remove(tapGestureRecognizer);
+            EnableButtons(false);
 
             try
             {
@@ -240,12 +242,12 @@ namespace ITES_App
                     {
                         try
                         {
-                            passwordEntry.Text = string.Empty;
-                            dniEntry.Text = string.Empty;
+                            await Navigation.PushAsync(new MainMenuPage());
                         }
                         finally
                         {
-                            await Navigation.PushAsync(new MainMenuPage());
+                            dniEntry.Text = string.Empty;
+                            passwordEntry.Text = string.Empty;
                         }
                     }
                 }
@@ -256,8 +258,7 @@ namespace ITES_App
             }
             finally
             {
-                forgotPasswordLabel.GestureRecognizers.Add(tapGestureRecognizer);
-                loginButton.IsEnabled = true;
+                EnableButtons(true);
             }
         }
 
@@ -275,6 +276,24 @@ namespace ITES_App
             {
                 await DisplayAlert("Error", "Por favor, complete el campo de Clave.", "Ok");
             }
+        }
+
+        private void EnableButtons(bool isEnabled)
+        {
+            if (isEnabled)
+            {
+                forgotPasswordLabel.GestureRecognizers.Add(tapGestureRecognizer);
+            }
+            else
+            {
+                forgotPasswordLabel.GestureRecognizers.Remove(tapGestureRecognizer);
+            }
+
+            dniEntry.IsEnabled = isEnabled;
+            passwordEntry.IsEnabled = isEnabled;
+            loginButton.IsEnabled = isEnabled;
+            dniEntry.TextColor = Color.Black;
+            passwordEntry.TextColor = Color.Black;
         }
 
         #endregion
