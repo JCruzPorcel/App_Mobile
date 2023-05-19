@@ -1,4 +1,5 @@
 ﻿using ITES_App.Design;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -139,27 +140,29 @@ namespace ITES_App.Views
 
         }
 
-        private async void OnListOfNotesButtonClicked(object sender, System.EventArgs e)
+
+
+        private async void OnListOfNotesButtonClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new ListOfNotesPage());
         }
 
-        private async void OnCertificateButtonClicked(object sender, System.EventArgs e)
+        private async void OnCertificateButtonClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new CertificatesPage());
         }
 
-        private async void OnInscriptionsButtonClicked(object sender, System.EventArgs e)
+        private async void OnInscriptionsButtonClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new InscriptionPage());
         }
 
-        private async void OnClassroomButtonClicked(object sender, System.EventArgs e)
+        private async void OnClassroomButtonClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new ClassroomPage());
         }
 
-        private async void OnAssistsButtonClicked(object sender, System.EventArgs e)
+        private async void OnAssistsButtonClicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new AssistsPage());
         }

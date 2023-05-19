@@ -19,7 +19,7 @@
                     <Frame BorderColor="Gray"
                            CornerRadius="10"
                            Padding="4"
-                           HeightRequest="45">
+                           HeightRequest="40">
                         <Picker x:Name="carreraPicker"
                                 Title="Seleccionar"
                                 TitleColor="Black"
@@ -39,7 +39,7 @@
                     <Frame BorderColor="Gray"
                            CornerRadius="10"
                            Padding="4"
-                           HeightRequest="45">
+                           HeightRequest="40">
                         <Picker x:Name="tipoPicker"
                                 Title="Seleccionar"
                                 TitleColor="Black"

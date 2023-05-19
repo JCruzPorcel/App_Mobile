@@ -15,6 +15,23 @@ namespace ITES_App.Views
 		public InscriptionPage ()
 		{
 			InitializeComponent ();
-		}
-	}
+
+            listView.ItemSelected += OnItemSelected;
+        }
+
+        private void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem == null)
+                return;
+
+            label.Text = e.SelectedItem.ToString();
+            listView.IsVisible = false;
+        }
+
+        private void OnLabelTapped(object sender, EventArgs e)
+        {
+            listView.IsVisible = !listView.IsVisible;
+        }
+
+    }
 }
