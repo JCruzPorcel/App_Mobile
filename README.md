@@ -1,8 +1,11 @@
-# App_Mobile con Firebase Realtime Database en Xamarin (C#)
-Esta aplicación fue desarrollada como proyecto de prueba para el colegio ITES. 
-A través de Xamarin (C#), se creó una app con base de datos en tiempo real de Firebase para administrar información de alumnos, incluyendo su DNI, contraseña, nombre y correo electrónico. 
-La app también permite la recuperación y cambio de contraseña, así como la actualización de datos del usuario.
+# 📱 Mobile App with Firebase Realtime Database in Xamarin (C#)
 
-Además, se incluye la generación y obtención de certificados de tipo Analítico y Alumno Regular basados en la carrera del usuario, junto con un listado de notas, materias cursadas, asistencias y classroom.
+## 🌟 Project Overview
+This application was developed as a test project for ITES. Using Xamarin (C#), I created an app with a Firebase Realtime Database to manage student information, including their ID number, password, name, and email.
 
-**Cabe destacar que esta aplicación sigue en desarrollo y mis habilidades continúan mejorando, ya que fue mi primera experiencia con Xamarin.**
+### 🎮 Key Features
+- **User Management:** Allows recovery and changing of passwords, as well as updating user data.
+- **Certificate Generation:** Supports the creation and retrieval of Analytical and Regular Student certificates based on the user's career.
+- **Academic Records:** Includes a listing of grades, completed subjects, attendance, and classroom information.
+
+**It is worth noting that this application is still in development, and my skills continue to improve, as it was my first experience with Xamarin.**
