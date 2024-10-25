@@ -1,4 +1,4 @@
-# 📱 Mobile App with Firebase Realtime Database in Xamarin (C#)
+# 📱 Mobile App in Xamarin (C#)
 
 ## 🌟 Project Overview
 This application was developed as a test project for ITES. Using Xamarin (C#), I created an app with a Firebase Realtime Database to manage student information, including their ID number, password, name, and email.
